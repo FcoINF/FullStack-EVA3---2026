@@ -24,6 +24,7 @@ import java.util.List;
 //POST    http://localhost:8082/redsalud/v1/pacientes              -> crear (201 Created)
 //PUT     http://localhost:8082/redsalud/v1/pacientes/{id}         -> actualizar
 //DELETE  http://localhost:8082/redsalud/v1/pacientes/{id}         -> eliminar (204 No Content)
+
 @RestController
 @RequestMapping("/redsalud/v1/pacientes") // Se define la ruta base para todos los endpoints de este controlador
 
