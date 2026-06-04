@@ -1,4 +1,4 @@
-package com.duoc.ms_pacientes.config;
+package com.duoc.ms_recetas.config;
 
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -6,9 +6,7 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
 public class OpenApiConfig {
     @Bean
     public OpenAPI configurarOpenApi() {
@@ -29,11 +27,8 @@ public class OpenApiConfig {
 
         // Información principal de la API
         Info informacionApi = new Info()
-                .title("Microservicio de Pacientes - RedSaludPatagónica")
-                .description("""
-                        API para la administración de pacientes,
-                        que permite el registro sin RUT mediante datos alternativos
-                        """)
+                .title("Microservicio de Recetas - RedSaludPatagónica")
+                .description("API para la emisión y administración de recetas médicas")
                 .version("1.0")
                 .termsOfService("http://duoc.cl")
                 .contact(contacto)

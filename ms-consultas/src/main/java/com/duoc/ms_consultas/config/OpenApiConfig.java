@@ -1,4 +1,4 @@
-package com.duoc.ms_pacientes.config;
+package com.duoc.ms_consultas.config;
 
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -29,11 +29,10 @@ public class OpenApiConfig {
 
         // Información principal de la API
         Info informacionApi = new Info()
-                .title("Microservicio de Pacientes - RedSaludPatagónica")
+                .title("Microservicio de Consultas - RedSaludPatagónica")
                 .description("""
-                        API para la administración de pacientes,
-                        que permite el registro sin RUT mediante datos alternativos
-                        """)
+                        API para la gestión de consultas médicas,
+                        tanto presenciales como remotas""")
                 .version("1.0")
                 .termsOfService("http://duoc.cl")
                 .contact(contacto)
