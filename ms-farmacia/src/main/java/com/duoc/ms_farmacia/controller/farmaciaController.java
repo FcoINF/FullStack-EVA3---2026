@@ -4,6 +4,10 @@ import com.duoc.ms_farmacia.dto.FarmaciaDTO;
 import com.duoc.ms_farmacia.model.farmacia;
 import com.duoc.ms_farmacia.service.farmaciaService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +23,16 @@ import java.util.List;
 //POST    http://localhost:8086/redsalud/v1/farmacia              -> crear (201 Created)
 //PUT     http://localhost:8086/redsalud/v1/farmacia/{id}         -> actualizar
 //DELETE  http://localhost:8086/redsalud/v1/farmacia/{id}         -> eliminar (204 No Content)
+//Integrar el patch
 
 @RestController
 @RequestMapping("/redsalud/v1/farmacia") // Se define la ruta base para todos los endpoints de este controlador
+
+//Descripcion general del microservicio
+@Tag(
+        name = "Microservicio de Farmacia",
+        description = "Se encarga de la gestion de los medicamentos"
+)
 public class farmaciaController {
 
     private final farmaciaService service; // Inyección del servicio que maneja la lógica de negocio
@@ -31,6 +42,19 @@ public class farmaciaController {
         this.service = service;
     }
 
+
+    @Operation(
+            summary = "Obtiene todos los medicamentos de la farmacia",
+            description = "Retorna la lista completa de los medicamentos"
+    )
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    description = "Consulta exitosa"),
+            @ApiResponse(responseCode = "500",
+                    description = "Error interno"
+            )
+    })
     @GetMapping
     public ResponseEntity<?> listarMedicamentos(){
         try {
@@ -42,6 +66,21 @@ public class farmaciaController {
         }
     }
 
+
+    @Operation(
+            summary = "Permite buscar mediante el ID los medicamentos",
+            description = "Retorna los medicamentos registrados"
+    )
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    description = "Medicamento encontrado"),
+            @ApiResponse(responseCode = "404",
+                    description = "Medicamento no encontrado"),
+            @ApiResponse(responseCode = "400",
+                    description = "Id inválido"
+            )
+    })
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id){
         try {
@@ -49,7 +88,7 @@ public class farmaciaController {
 
             if (farmacia == null){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("No se encontro el ID del medicamento"); // 404 si no existe
+                        .body("No se encontró la consulta con el ID especificado"); // 404 si no existe
             }
             return ResponseEntity.ok().body(farmacia); // Devuelve el objeto encontrado
         } catch (Exception e) {
@@ -58,6 +97,19 @@ public class farmaciaController {
         }
     }
 
+
+    @Operation(
+            summary = "Registro de un medicamento",
+            description = "Permite agregar un medicamento nuevo"
+    )
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "201",
+                    description = "Medicamento creado"),
+            @ApiResponse(responseCode = "500",
+                    description = "Error interno al crear el medicamento"
+            )
+    })
     @PostMapping
     public ResponseEntity<?> crear(@Valid @RequestBody FarmaciaDTO farmaciaDTO) {
         try {
@@ -70,7 +122,19 @@ public class farmaciaController {
     }
 
 
+    @Operation(
+            summary = "Actualizar un medicamento",
+            description = "Permite modificar los datos de un medicamento"
+    )
 
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    description = "Datos del medicamento actualizados"),
+            @ApiResponse(responseCode = "404",
+                    description = "Medicamento no encontrado"),
+            @ApiResponse(responseCode = "400",
+                    description = "Datos inválidos")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Long id, @Valid @RequestBody FarmaciaDTO farmaciaDTO){
         try {
@@ -89,7 +153,18 @@ public class farmaciaController {
         }
     }
 
+    @Operation(
+            summary = "Eliminar un medicamento",
+            description = "Permite eliminar un medicamento existente"
+    )
 
+    @ApiResponses({
+            @ApiResponse(responseCode = "204",
+                    description = "Medicamento eliminado"),
+            @ApiResponse(responseCode = "500",
+                    description = "Error interno al eliminar el medicamento"
+            )
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id){
         boolean eliminado = service.eliminar(id); // Elimina el objeto mediante el ID

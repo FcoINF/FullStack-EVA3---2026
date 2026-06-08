@@ -67,7 +67,7 @@ public class consultasController {
     }
 
     @Operation(
-            summary = "Permite buscar mediante el ID las de RedSalud",
+            summary = "Permite buscar mediante el ID las consultas de RedSaludPatagónica",
             description = "Retorna las consultas registradas"
     )
 
@@ -88,7 +88,7 @@ public class consultasController {
 
             if (consultas == null){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("No se encontro el ID de la consulta");
+                        .body("No se encontró la consulta con el ID especificado");
             }
             return ResponseEntity.ok().body(consultas); // Devuelve la entidad encontrada
         } catch (Exception e) {
@@ -106,6 +106,8 @@ public class consultasController {
             @ApiResponse(responseCode = "201",
                     description = "Consulta creada"),
             @ApiResponse(responseCode = "400",
+                    description = "Datos inválidos"),
+            @ApiResponse(responseCode = "500",
                     description = "Error interno al crear la consulta"
             )
     })
@@ -117,7 +119,7 @@ public class consultasController {
             return ResponseEntity.status(HttpStatus.CREATED).body(nuevaConsulta);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error al agendar la consulta");
+                    .body("Error interno al crear la consulta");
         }
     }
 
