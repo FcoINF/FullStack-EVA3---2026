@@ -2,14 +2,10 @@ package com.duoc.ms_pacientes.controller;
 
 import com.duoc.ms_pacientes.model.pacientes;
 import com.duoc.ms_pacientes.service.pacientesService;
-
-//Nuevos imports del proyecto
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +20,7 @@ import java.util.List;
 //POST    http://localhost:8082/redsalud/v1/pacientes              -> crear (201 Created)
 //PUT     http://localhost:8082/redsalud/v1/pacientes/{id}         -> actualizar
 //DELETE  http://localhost:8082/redsalud/v1/pacientes/{id}         -> eliminar (204 No Content)
+//INTREGAR EL PATCH
 
 @RestController
 @RequestMapping("/redsalud/v1/pacientes") // Se define la ruta base para todos los endpoints de este controlador
@@ -105,9 +102,10 @@ public class pacientesController {
             @ApiResponse(responseCode = "201",
                     description = "Paciente agregado"),
             @ApiResponse(responseCode = "400",
-                    description = "Datos invalidos"
+                    description = "Error interno al crear la consulta"
             )
     })
+
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody pacientes paciente){
         try {
@@ -141,7 +139,6 @@ public class pacientesController {
     )
 
     @ApiResponses({
-            // 4.1  Response
             @ApiResponse(responseCode = "200",
                     description = "Datos del paciente actualizados"),
             @ApiResponse(responseCode = "404",
@@ -149,6 +146,7 @@ public class pacientesController {
             @ApiResponse(responseCode = "400",
                     description = "Datos inválidos")
     })
+
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody pacientes paciente){
         pacientes actualizado = service.actualizar(id, paciente); // Actualiza los campos modificados de la entidad
@@ -168,13 +166,13 @@ public class pacientesController {
     )
 
     @ApiResponses({
-            // 4.1  Response
             @ApiResponse(responseCode = "201",
                     description = "Paciente eliminado"),
             @ApiResponse(responseCode = "",
                     description = "Error al eliminar paciente"
             )
     })
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id){
         boolean eliminado = service.eliminar(id);
