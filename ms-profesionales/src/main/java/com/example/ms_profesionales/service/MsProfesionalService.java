@@ -1,13 +1,15 @@
 package com.example.ms_profesionales.service;
 
+import com.example.ms_profesionales.exceptions.ResourceNotFoundException;
 import com.example.ms_profesionales.model.MsProfesional;
 import com.example.ms_profesionales.repository.MsProfesionalRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
-@Service // Marca la clase como servicio ya que contiene la lógica de negocio
+@Slf4j
+@Service
 public class MsProfesionalService {
 
     private final MsProfesionalRepository repository;
@@ -16,32 +18,45 @@ public class MsProfesionalService {
         this.repository = repository;
     }
 
-    public List<MsProfesional> listarTodos(){
-        return repository.findAll();
-    } // Devuelve todos los profesionales
-
-    public Optional<MsProfesional> buscarPorId(Long id){
-        return repository.findById(id);
+    public List<MsProfesional> listarTodos() {
+        log.info("Listando todos los profesionales");
+        List<MsProfesional> lista = repository.findAll();
+        log.debug("Se encontraron {} profesionales", lista.size());
+        return lista;
     }
 
-    public MsProfesional guardar(MsProfesional msProfesional){
-        return repository.save(msProfesional);
+    public MsProfesional buscarPorId(Long id) {
+        log.info("Buscando profesional con id: {}", id);
+        return repository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("No se encontro profesional con id: {}", id);
+                    return new ResourceNotFoundException("No se encontro profesional con id " + id);
+                });
+    }
+
+    public MsProfesional guardar(MsProfesional profesional) {
+        log.info("Creando nuevo profesional: {}", profesional.getNombre());
+        MsProfesional creado = repository.save(profesional);
+        log.info("Profesional creado exitosamente con id: {}", creado.getId());
+        return creado;
     }
 
     public MsProfesional actualizar(Long id, MsProfesional profesional) {
-        return repository.findById(id)
-                .map(p -> {
-                    // Actualiza campos de la entidad existente
-                    p.setNombre(profesional.getNombre());
-                    p.setEspecialidad(profesional.getEspecialidad());
-                    p.setCorreo(profesional.getCorreo());
-                    p.setTelefono(profesional.getTelefono());
-                    return repository.save(p); // Guarda los cambios realizados
-                })
-                .orElse(null);
+        log.info("Actualizando profesional con id: {}", id);
+        MsProfesional p = buscarPorId(id);
+        p.setNombre(profesional.getNombre());
+        p.setEspecialidad(profesional.getEspecialidad());
+        p.setCorreo(profesional.getCorreo());
+        p.setTelefono(profesional.getTelefono());
+        MsProfesional guardado = repository.save(p);
+        log.info("Profesional {} actualizado exitosamente", id);
+        return guardado;
     }
 
-    public void eliminar(Long id){
-        repository.deleteById(id);
+    public void eliminar(Long id) {
+        log.info("Eliminando profesional con id: {}", id);
+        MsProfesional existente = buscarPorId(id);
+        repository.delete(existente);
+        log.info("Profesional {} eliminado exitosamente", id);
     }
 }

@@ -1,13 +1,16 @@
 package com.duoc.ms_consultas.service;
 
 import com.duoc.ms_consultas.dto.ConsultasDTO;
+import com.duoc.ms_consultas.exceptions.ResourceNotFoundException;
 import com.duoc.ms_consultas.model.consultas;
 import com.duoc.ms_consultas.repository.consultasRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service // Marca la clase como servicio debido a que contiene la lógica de negocio
+@Slf4j
+@Service
 public class consultasService {
 
     private final consultasRepository repository;
@@ -17,55 +20,55 @@ public class consultasService {
     }
 
     public consultas crear(ConsultasDTO dto) {
-        // Mapeo manual del DTO a la entidad que asegura que solo campos válidos sean persistentes
-        consultas nueva = new consultas();
-        nueva.setId(dto.getId());
-        nueva.setNombrePaciente(dto.getNombrePaciente());
-        nueva.setFichaPaciente(dto.getFichaPaciente());
-        nueva.setNombreProfesional(dto.getNombreProfesional());
-        nueva.setFichaProfesional(dto.getFichaProfesional());
-        nueva.setRazonConsulta(dto.getRazonConsulta());
-        nueva.setModalidad(dto.getModalidad());
-        nueva.setFechaConsulta(dto.getFechaConsulta());
-
-        return repository.save(nueva);
+        log.info("Creando nueva consulta para paciente: {}", dto.getFichaPaciente());
+        consultas entity = new consultas();
+        entity.setNombrePaciente(dto.getNombrePaciente());
+        entity.setFichaPaciente(dto.getFichaPaciente());
+        entity.setNombreProfesional(dto.getNombreProfesional());
+        entity.setFichaProfesional(dto.getFichaProfesional());
+        entity.setRazonConsulta(dto.getRazonConsulta());
+        entity.setFechaConsulta(dto.getFechaConsulta());
+        entity.setModalidad(dto.getModalidad());
+        consultas creada = repository.save(entity);
+        log.info("Consulta creada exitosamente con id: {}", creada.getId());
+        return creada;
     }
-
 
     public List<consultas> listarConsultas() {
-        return repository.findAll();
-    } // Devuelve todas las consultas
+        log.info("Listando todas las consultas");
+        List<consultas> consultas = repository.findAll();
+        log.debug("Se encontraron {} consultas", consultas.size());
+        return consultas;
+    }
 
     public consultas buscarPorId(Long id) {
-        return repository.findById(id).orElse(null);
+        log.info("Buscando consulta con id: {}", id);
+        return repository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("No se encontro consulta con id: {}", id);
+                    return new ResourceNotFoundException("No se encontro consulta con id " + id);
+                });
     }
 
-    public consultas actualizar(Long id, consultas consulta) {
-        consultas c = buscarPorId(id);
-
-        if (c == null) {
-            return null; // Si no existe, retorna un null
-        }
-
-        // Actualiza campos de la entidad existente
-        c.setNombrePaciente(consulta.getNombrePaciente());
-        c.setFichaPaciente(consulta.getFichaPaciente());
-        c.setNombreProfesional(consulta.getNombreProfesional());
-        c.setFichaProfesional(consulta.getFichaProfesional());
-        c.setRazonConsulta(consulta.getRazonConsulta());
-        c.setFechaConsulta(consulta.getFechaConsulta());
-        c.setModalidad(consulta.getModalidad());
-
-        return repository.save(c); // Guarda los cambios realizados
+    public consultas actualizar(Long id, consultas consultaActualizada) {
+        log.info("Actualizando consulta con id: {}", id);
+        consultas existente = buscarPorId(id);
+        existente.setNombrePaciente(consultaActualizada.getNombrePaciente());
+        existente.setFichaPaciente(consultaActualizada.getFichaPaciente());
+        existente.setNombreProfesional(consultaActualizada.getNombreProfesional());
+        existente.setFichaProfesional(consultaActualizada.getFichaProfesional());
+        existente.setRazonConsulta(consultaActualizada.getRazonConsulta());
+        existente.setFechaConsulta(consultaActualizada.getFechaConsulta());
+        existente.setModalidad(consultaActualizada.getModalidad());
+        consultas guardada = repository.save(existente);
+        log.info("Consulta actualizada exitosamente con id: {}", guardada.getId());
+        return guardada;
     }
 
-    public boolean eliminar(Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void eliminar(Long id) {
+        log.info("Eliminando consulta con id: {}", id);
+        consultas existente = buscarPorId(id);
+        repository.delete(existente);
+        log.info("Consulta {} eliminada exitosamente", id);
     }
 }
-
-

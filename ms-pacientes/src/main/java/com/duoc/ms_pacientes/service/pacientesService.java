@@ -1,13 +1,15 @@
 package com.duoc.ms_pacientes.service;
 
+import com.duoc.ms_pacientes.exceptions.ResourceNotFoundException;
 import com.duoc.ms_pacientes.model.pacientes;
 import com.duoc.ms_pacientes.repository.pacientesRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
-@Service // Marca la clase como servicio ya que contiene la lógica de negocio
+@Slf4j
+@Service
 public class pacientesService {
 
     private final pacientesRepository repository;
@@ -16,26 +18,32 @@ public class pacientesService {
         this.repository = repository;
     }
 
-    public pacientes crear (pacientes pacientes) {
-        return repository.save(pacientes);
+    public pacientes crear(pacientes paciente) {
+        log.info("Creando nuevo paciente: {}", paciente.getNombre());
+        pacientes creado = repository.save(paciente);
+        log.info("Paciente creado exitosamente con id: {}", creado.getId());
+        return creado;
     }
 
     public List<pacientes> listarTodos() {
-        return repository.findAll();
-    } // Devuelve todos los pacientes
+        log.info("Listando todos los pacientes");
+        List<pacientes> lista = repository.findAll();
+        log.debug("Se encontraron {} pacientes", lista.size());
+        return lista;
+    }
 
     public pacientes buscarPorId(Long id) {
-        return repository.findById(id).orElse(null);
+        log.info("Buscando paciente con id: {}", id);
+        return repository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("No se encontro paciente con id: {}", id);
+                    return new ResourceNotFoundException("No se encontro paciente con id " + id);
+                });
     }
 
     public pacientes actualizar(Long id, pacientes paciente) {
+        log.info("Actualizando paciente con id: {}", id);
         pacientes p = buscarPorId(id);
-
-        if (p == null) {
-            return null; // Si no existe, retorna un null
-        }
-
-        // Mapeo manual del DTO a la entidad que asegura que solo campos válidos sean persistentes
         p.setNombre(paciente.getNombre());
         p.setDireccion(paciente.getDireccion());
         p.setResidencia(paciente.getResidencia());
@@ -43,15 +51,15 @@ public class pacientesService {
         p.setEmail(paciente.getEmail());
         p.setTelefono(paciente.getTelefono());
         p.setRut(paciente.getRut());
-
-        return repository.save(p); // Guarda los cambios realizados
+        pacientes guardado = repository.save(p);
+        log.info("Paciente {} actualizado exitosamente", id);
+        return guardado;
     }
 
-    public boolean eliminar(Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void eliminar(Long id) {
+        log.info("Eliminando paciente con id: {}", id);
+        pacientes existente = buscarPorId(id);
+        repository.delete(existente);
+        log.info("Paciente {} eliminado exitosamente", id);
     }
 }

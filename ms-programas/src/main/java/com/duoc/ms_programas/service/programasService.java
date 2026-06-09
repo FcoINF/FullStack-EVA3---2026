@@ -1,12 +1,15 @@
 package com.duoc.ms_programas.service;
 
+import com.duoc.ms_programas.exceptions.ResourceNotFoundException;
 import com.duoc.ms_programas.model.programas;
 import com.duoc.ms_programas.repository.programasRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service // Marca la clase como servicio debido a que contiene la lógica de negocio
+@Slf4j
+@Service
 public class programasService {
 
     private final programasRepository repository;
@@ -15,40 +18,46 @@ public class programasService {
         this.repository = repository;
     }
 
-    public programas crear (programas programas) {
-        return repository.save(programas);
+    public programas crear(programas programa) {
+        log.info("Creando nuevo programa: {}", programa.getNombrePrograma());
+        programas creado = repository.save(programa);
+        log.info("Programa creado exitosamente con id: {}", creado.getId());
+        return creado;
     }
 
     public List<programas> listarTodos() {
-        return repository.findAll(); // Devuelve todos los programas
+        log.info("Listando todos los programas");
+        List<programas> lista = repository.findAll();
+        log.debug("Se encontraron {} programas", lista.size());
+        return lista;
     }
 
     public programas buscarPorId(Long id) {
-        return repository.findById(id).orElse(null);
+        log.info("Buscando programa con id: {}", id);
+        return repository.findById(id)
+                .orElseThrow(() -> {
+                    log.warn("No se encontro programa con id: {}", id);
+                    return new ResourceNotFoundException("No se encontro programa con id " + id);
+                });
     }
 
-    public programas actualizar(Long id, programas programas) {
+    public programas actualizar(Long id, programas programa) {
+        log.info("Actualizando programa con id: {}", id);
         programas p = buscarPorId(id);
-
-        if (p == null) {
-            return null; // Si no existe, retorna un null
-        }
-
-        // Actualiza campos de la entidad existente
-        p.setNombrePrograma(programas.getNombrePrograma());
-        p.setNombreEncargado(programas.getNombreEncargado());
-        p.setTipoPrograma(programas.getTipoPrograma());
-        p.setLugarPrograma(programas.getLugarPrograma());
-        p.setFechaPrograma(programas.getFechaPrograma());
-
-        return repository.save(p); // Guarda los cambios realizados
+        p.setNombrePrograma(programa.getNombrePrograma());
+        p.setNombreEncargado(programa.getNombreEncargado());
+        p.setTipoPrograma(programa.getTipoPrograma());
+        p.setLugarPrograma(programa.getLugarPrograma());
+        p.setFechaPrograma(programa.getFechaPrograma());
+        programas guardado = repository.save(p);
+        log.info("Programa {} actualizado exitosamente", id);
+        return guardado;
     }
 
-    public boolean eliminar(Long id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void eliminar(Long id) {
+        log.info("Eliminando programa con id: {}", id);
+        programas existente = buscarPorId(id);
+        repository.delete(existente);
+        log.info("Programa {} eliminado exitosamente", id);
     }
 }
