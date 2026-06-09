@@ -30,7 +30,6 @@ import java.util.List;
         name = "Microservicio de Pacientes",
         description = "Se encarga de la gestion de los pacientes"
 )
-
 public class pacientesController {
 
     private final pacientesService service; // Inyección del servicio que maneja la lógica de negocio
@@ -63,7 +62,7 @@ public class pacientesController {
     }
 
     @Operation(
-            summary = "Permite buscar mediante el ID a los pacientes de RedSalud",
+            summary = "Permite buscar mediante el ID a los pacientes de RedSaludPatagónica",
             description = "Retorna al paciente registrado"
     )
 
@@ -83,7 +82,7 @@ public class pacientesController {
 
             if (pacientes == null){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("No se encontro el ID del paciente"); // 404 si no existe
+                        .body("No se encontro el paciente con el ID especificado"); // 404 si no existe
             }
             return ResponseEntity.ok().body(pacientes); // Devuelve el objeto encontrado
         } catch (Exception e) {
@@ -102,10 +101,11 @@ public class pacientesController {
             @ApiResponse(responseCode = "201",
                     description = "Paciente agregado"),
             @ApiResponse(responseCode = "400",
-                    description = "Error interno al crear la consulta"
+                    description = "Datos inválidos"),
+            @ApiResponse(responseCode = "500",
+                    description = "Error interno al crear al paciente"
             )
     })
-
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody pacientes paciente){
         try {
@@ -146,7 +146,6 @@ public class pacientesController {
             @ApiResponse(responseCode = "400",
                     description = "Datos inválidos")
     })
-
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody pacientes paciente){
         pacientes actualizado = service.actualizar(id, paciente); // Actualiza los campos modificados de la entidad
@@ -166,13 +165,12 @@ public class pacientesController {
     )
 
     @ApiResponses({
-            @ApiResponse(responseCode = "201",
+            @ApiResponse(responseCode = "200",
                     description = "Paciente eliminado"),
-            @ApiResponse(responseCode = "",
-                    description = "Error al eliminar paciente"
+            @ApiResponse(responseCode = "500",
+                    description = "Error interno al eliminar paciente"
             )
     })
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id){
         boolean eliminado = service.eliminar(id);

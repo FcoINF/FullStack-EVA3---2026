@@ -3,6 +3,10 @@ package com.duoc.ms_recetas.controller;
 import com.duoc.ms_recetas.model.recetas;
 import com.duoc.ms_recetas.service.recetasService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +21,16 @@ import java.util.List;
 //POST    http://localhost:8083/redsalud/v1/recetas              -> crear (201 Created)
 //PUT     http://localhost:8083/redsalud/v1/recetas/{id}         -> actualizar
 //DELETE  http://localhost:8083/redsalud/v1/recetas/{id}         -> eliminar (204 No Content)
+//agregar patch
+
 @RestController
 @RequestMapping("/redsalud/v1/recetas")
+
+//Descripcion general del microservicio
+@Tag(
+        name = "Microservicio de recetas",
+        description = "Se encarga de la gestion de las recetas"
+)
 public class recetasController {
 
     private recetasService service; // Se define la ruta base para todos los endpoints de este controlador
@@ -27,18 +39,43 @@ public class recetasController {
         this.service = service;
     }
 
+    @Operation(
+            summary = "Obtiene todas las recetas asignadas de RedSaludPatagónica",
+            description = "Retorna la lista completa de las recetas registradas"
+    )
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    description = "Consulta exitosa"),
+            @ApiResponse(responseCode = "500",
+                    description = "Error interno"
+            )
+    })
     @GetMapping
     public ResponseEntity<?> listarRecetas() {
         try {
             List<recetas> pacientes = service.listarRecetas(); // Llama al servicio para obtener las recetas
-            return ResponseEntity.ok()
-                    .body("Recetas listadas correctamente"); // Devuelve mensaje de éxito
+            return ResponseEntity.ok(pacientes);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error al listar las recetas"); // Devuelve mensaje de error
         }
     }
 
+    @Operation(
+            summary = "Permite buscar mediante el ID las recetas de RedSaludPatagónica",
+            description = "Retorna la receta registrada"
+    )
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    description = "Receta encontrada"),
+            @ApiResponse(responseCode = "404",
+                    description = "Receta no encontrada"),
+            @ApiResponse(responseCode = "400",
+                    description = "Id inválido"
+            )
+    })
     @GetMapping("/{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable Long id){
         try {
@@ -46,7 +83,7 @@ public class recetasController {
 
             if (recetas == null){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("No se encontro el ID de la receta medica");
+                        .body("No se encontro la receta con el ID especificado");
             }
             return ResponseEntity.ok().body(recetas); // Devuelve el objeto encontrado
         } catch (Exception e) {
@@ -55,6 +92,20 @@ public class recetasController {
         }
     }
 
+    @Operation(
+            summary = "Registro de una receta",
+            description = "Permite agregar una nueva receta"
+    )
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "201",
+                    description = "Receta creada"),
+            @ApiResponse(responseCode = "400",
+                    description = "Datos inválidos"),
+            @ApiResponse(responseCode = "500",
+                    description = "Error interno al crear la receta"
+            )
+    })
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody recetas recetas){
         try {
@@ -81,18 +132,43 @@ public class recetasController {
         }
     }
 
+    @Operation(
+            summary = "Actualizar datos de una receta",
+            description = "Permite modificar los datos de una receta"
+    )
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    description = "Datos de la receta actualizados"),
+            @ApiResponse(responseCode = "404",
+                    description = "Receta no encontrada"),
+            @ApiResponse(responseCode = "400",
+                    description = "Datos inválidos")
+    })
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizar(@PathVariable Long id, @RequestBody recetas recetas){
         recetas actualizado = service.actualizar(id, recetas); // Actualiza campos de la entidad
 
         if (actualizado == null){
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("No se encontro el ID de la receta medica");
+                    .body("No se encontró la receta con el ID especificado");
         }
 
         return ResponseEntity.ok().body(actualizado);
     }
 
+    @Operation(
+            summary = "Eliminar una receta",
+            description = "Permite eliminar una receta existente"
+    )
+
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",
+                    description = "Receta eliminada"),
+            @ApiResponse(responseCode = "500",
+                    description = "Error interno al eliminar la receta"
+            )
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id){
         boolean eliminado = service.eliminar(id);
