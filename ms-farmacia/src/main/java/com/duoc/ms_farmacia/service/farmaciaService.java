@@ -65,6 +65,38 @@ public class farmaciaService {
         return guardada;
     }
 
+    public farmacia patch(Long id, FarmaciaDTO dto) {
+        log.info("Actualizando parcialmente medicamento con id: {}", id);
+
+        farmacia existente = buscarPorId(id);
+
+        if (dto.getMedicamentos() != null) {
+            existente.setMedicamentos(dto.getMedicamentos());
+        }
+        if (dto.getStockMedicamentos() != null) {
+            existente.setStockMedicamentos(dto.getStockMedicamentos());
+        }
+        if (dto.getEncargadoNombre() != null) {
+            existente.setEncargadoNombre(dto.getEncargadoNombre());
+        }
+        if (dto.getTelefonoFarmacia() != null) {
+            existente.setTelefonoFarmacia(dto.getTelefonoFarmacia());
+        }
+        if (dto.getProveedor() != null) {
+            existente.setProveedor(dto.getProveedor());
+        }
+        if (dto.getTelefonoProveedor() != null) {
+            existente.setTelefonoProveedor(dto.getTelefonoProveedor());
+        }
+        if (dto.getHorarioFarmacia() != null) {
+            existente.setHorarioFarmacia(dto.getHorarioFarmacia());
+        }
+
+        farmacia actualizada = repository.save(existente);
+        log.info("Medicamento actualizado parcialmente con id: {}", actualizada.getId());
+        return actualizada;
+    }
+
     public void eliminar(Long id) {
         log.info("Eliminando medicamento con id: {}", id);
         farmacia existente = buscarPorId(id);

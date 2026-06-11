@@ -54,6 +54,32 @@ public class programasService {
         return guardado;
     }
 
+    public programas patch(Long id, programas programa) {
+        log.info("Actualizando parcialmente programa con id: {}", id);
+
+        programas existente = buscarPorId(id);
+
+        if (programa.getNombrePrograma() != null) {
+            existente.setNombrePrograma(programa.getNombrePrograma());
+        }
+        if (programa.getNombreEncargado() != null) {
+            existente.setNombreEncargado(programa.getNombreEncargado());
+        }
+        if (programa.getTipoPrograma() != null) {
+            existente.setTipoPrograma(programa.getTipoPrograma());
+        }
+        if (programa.getLugarPrograma() != null) {
+            existente.setLugarPrograma(programa.getLugarPrograma());
+        }
+        if (programa.getFechaPrograma() != null) {
+            existente.setFechaPrograma(programa.getFechaPrograma());
+        }
+
+        programas actualizado = repository.save(existente);
+        log.info("Programa actualizado parcialmente con id: {}", actualizado.getId());
+        return actualizado;
+    }
+
     public void eliminar(Long id) {
         log.info("Eliminando programa con id: {}", id);
         programas existente = buscarPorId(id);

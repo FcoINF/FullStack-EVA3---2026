@@ -65,6 +65,37 @@ public class consultasService {
         return guardada;
     }
 
+    public consultas patch(Long id, ConsultasDTO dto) {
+        log.info("Actualizando parcialmente consulta con id: {}", id);
+
+        consultas existente = buscarPorId(id);
+        if (dto.getNombrePaciente() != null) {
+            existente.setNombrePaciente(dto.getNombrePaciente());
+        }
+        if (dto.getFichaPaciente() != null) {
+            existente.setFichaPaciente(dto.getFichaPaciente());
+        }
+        if (dto.getNombreProfesional() != null) {
+            existente.setNombreProfesional(dto.getNombreProfesional());
+        }
+        if (dto.getFichaProfesional() != null) {
+            existente.setFichaProfesional(dto.getFichaProfesional());
+        }
+        if (dto.getRazonConsulta() != null) {
+            existente.setRazonConsulta(dto.getRazonConsulta());
+        }
+        if (dto.getFechaConsulta() != null) {
+            existente.setFechaConsulta(dto.getFechaConsulta());
+        }
+        if (dto.getModalidad() != null) {
+            existente.setModalidad(dto.getModalidad());
+        }
+
+        consultas actualizada = repository.save(existente);
+        log.info("Consulta actualizada parcialmente con id: {}", actualizada.getId());
+        return actualizada;
+    }
+
     public void eliminar(Long id) {
         log.info("Eliminando consulta con id: {}", id);
         consultas existente = buscarPorId(id);

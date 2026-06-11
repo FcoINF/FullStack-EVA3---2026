@@ -56,6 +56,38 @@ public class pacientesService {
         return guardado;
     }
 
+    public pacientes patch(Long id, pacientes paciente) {
+        log.info("Actualizando parcialmente paciente con id: {}", id);
+
+        pacientes existente = buscarPorId(id);
+
+        if (paciente.getNombre() != null) {
+            existente.setNombre(paciente.getNombre());
+        }
+        if (paciente.getDireccion() != null) {
+            existente.setDireccion(paciente.getDireccion());
+        }
+        if (paciente.getResidencia() != null) {
+            existente.setResidencia(paciente.getResidencia());
+        }
+        if (paciente.getFechaNacimiento() != null) {
+            existente.setFechaNacimiento(paciente.getFechaNacimiento());
+        }
+        if (paciente.getEmail() != null) {
+            existente.setEmail(paciente.getEmail());
+        }
+        if (paciente.getTelefono() != null) {
+            existente.setTelefono(paciente.getTelefono());
+        }
+        if (paciente.getRut() != null) {
+            existente.setRut(paciente.getRut());
+        }
+
+        pacientes actualizado = repository.save(existente);
+        log.info("Paciente actualizado parcialmente con id: {}", actualizado.getId());
+        return actualizado;
+    }
+
     public void eliminar(Long id) {
         log.info("Eliminando paciente con id: {}", id);
         pacientes existente = buscarPorId(id);

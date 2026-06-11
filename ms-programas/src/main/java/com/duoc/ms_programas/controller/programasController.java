@@ -81,6 +81,16 @@ public class programasController {
         return ResponseEntity.ok(service.actualizar(id, programa));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<programas> patch(
+            @PathVariable Long id,
+            @RequestBody programas programa) {
+
+        log.info("PATCH /redsalud/v1/programas/{}", id);
+
+        return ResponseEntity.ok(service.patch(id, programa));
+    }
+
     @Operation(summary = "Eliminar a un programa",
             description = "Permite eliminar a un programa existente")
     @ApiResponses({

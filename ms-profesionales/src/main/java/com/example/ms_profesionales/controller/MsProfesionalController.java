@@ -80,6 +80,16 @@ public class MsProfesionalController {
         return ResponseEntity.ok(service.actualizar(id, profesional));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<MsProfesional> patch(
+            @PathVariable Long id,
+            @RequestBody MsProfesional profesional) {
+
+        log.info("PATCH /profesionales/{}", id);
+
+        return ResponseEntity.ok(service.patch(id, profesional));
+    }
+
     @Operation(summary = "Eliminar a un profesional",
             description = "Permite eliminar a un profesional existente")
     @ApiResponses({

@@ -18,7 +18,7 @@ public class FarmaciaDTO {
     private String medicamentos; // Nombre del medicamento
 
     @PositiveOrZero(message = "El stock no puede ser negativo")
-    private int stockMedicamentos; // Stock disponible
+    private Integer stockMedicamentos; // Stock disponible
 
     @NotBlank(message = "El nombre del encargado es obligatorio")
     @Size(min = 2, max = 50)

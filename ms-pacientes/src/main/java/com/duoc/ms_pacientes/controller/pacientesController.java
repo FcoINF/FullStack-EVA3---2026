@@ -81,6 +81,15 @@ public class pacientesController {
         return ResponseEntity.ok(service.actualizar(id, paciente));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<pacientes> patchPaciente(
+            @PathVariable Long id,
+            @RequestBody pacientes paciente) {
+
+        log.info("PATCH /redsalud/v1/pacientes/{}", id);
+        return ResponseEntity.ok(service.patch(id, paciente));
+    }
+
     @Operation(summary = "Eliminar a un paciente",
             description = "Permite eliminar a un paciente existente")
     @ApiResponses({

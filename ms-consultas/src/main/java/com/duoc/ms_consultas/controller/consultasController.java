@@ -82,6 +82,21 @@ public class consultasController {
         return ResponseEntity.ok(service.actualizar(id, consulta));
     }
 
+    @Operation(summary = "Actualización parcial de una consulta",
+            description = "Permite modificar uno o varios campos de una consulta sin reemplazar el recurso completo")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Consulta actualizada correctamente"),
+            @ApiResponse(responseCode = "404", description = "Consulta no encontrada"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos")
+    })
+    @PatchMapping("/{id}")
+    public ResponseEntity<consultas> patchConsulta(
+            @PathVariable Long id,
+            @RequestBody ConsultasDTO consultaDTO) {
+        log.info("PATCH /redsalud/v1/consultas/{}", id);
+        return ResponseEntity.ok(service.patch(id, consultaDTO));
+    }
+
     @Operation(summary = "Eliminar una consulta",
             description = "Permite eliminar una consulta existente")
     @ApiResponses({

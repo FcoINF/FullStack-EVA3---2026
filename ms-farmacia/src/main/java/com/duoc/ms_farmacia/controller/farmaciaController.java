@@ -81,6 +81,21 @@ public class farmaciaController {
         return ResponseEntity.ok(service.actualizar(id, farmaciaDTO));
     }
 
+    @Operation(summary = "Actualización parcial de un medicamento",
+            description = "Permite modificar uno o varios campos del medicamento")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Medicamento actualizado correctamente"),
+            @ApiResponse(responseCode = "404", description = "Medicamento no encontrado"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos")
+    })
+    @PatchMapping("/{id}")
+    public ResponseEntity<farmacia> patchMedicamento(
+            @PathVariable Long id,
+            @RequestBody FarmaciaDTO dto) {
+        log.info("PATCH /redsalud/v1/farmacia/{}", id);
+        return ResponseEntity.ok(service.patch(id, dto));
+    }
+
     @Operation(summary = "Eliminar un medicamento",
             description = "Permite eliminar un medicamento existente")
     @ApiResponses({

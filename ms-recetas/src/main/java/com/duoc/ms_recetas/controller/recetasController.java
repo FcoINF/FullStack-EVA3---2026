@@ -81,6 +81,14 @@ public class recetasController {
         return ResponseEntity.ok(service.actualizar(id, receta));
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<recetas> patch(
+            @PathVariable Long id,
+            @RequestBody recetas receta) {
+        log.info("PATCH /redsalud/v1/recetas/{}", id);
+        return ResponseEntity.ok(service.patch(id, receta));
+    }
+
     @Operation(summary = "Eliminar una receta",
             description = "Permite eliminar una receta existente")
     @ApiResponses({

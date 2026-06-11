@@ -56,6 +56,39 @@ public class recetasService {
         return guardada;
     }
 
+
+    public recetas patch(Long id, recetas receta) {
+        log.info("Actualizando parcialmente receta con id: {}", id);
+
+        recetas existente = buscarPorId(id);
+
+        if (receta.getIdPaciente() != null) {
+            existente.setIdPaciente(receta.getIdPaciente());
+        }
+        if (receta.getNombrePaciente() != null) {
+            existente.setNombrePaciente(receta.getNombrePaciente());
+        }
+        if (receta.getIdProfesional() != null) {
+            existente.setIdProfesional(receta.getIdProfesional());
+        }
+        if (receta.getNombreProfesional() != null) {
+            existente.setNombreProfesional(receta.getNombreProfesional());
+        }
+        if (receta.getFechaEmision() != null) {
+            existente.setFechaEmision(receta.getFechaEmision());
+        }
+        if (receta.getNombreMedicamentos() != null) {
+            existente.setNombreMedicamentos(receta.getNombreMedicamentos());
+        }
+        if (receta.getIndicacionesMedicas() != null) {
+            existente.setIndicacionesMedicas(receta.getIndicacionesMedicas());
+        }
+
+        recetas actualizada = repository.save(existente);
+        log.info("Receta actualizada parcialmente con id: {}", actualizada.getId());
+        return actualizada;
+    }
+
     public void eliminar(Long id) {
         log.info("Eliminando receta con id: {}", id);
         recetas existente = buscarPorId(id);

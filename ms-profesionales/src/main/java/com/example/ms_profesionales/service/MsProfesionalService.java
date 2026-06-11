@@ -53,6 +53,29 @@ public class MsProfesionalService {
         return guardado;
     }
 
+    public MsProfesional patch(Long id, MsProfesional profesional) {
+        log.info("Actualizando parcialmente profesional con id: {}", id);
+
+        MsProfesional existente = buscarPorId(id);
+
+        if (profesional.getNombre() != null) {
+            existente.setNombre(profesional.getNombre());
+        }
+        if (profesional.getEspecialidad() != null) {
+            existente.setEspecialidad(profesional.getEspecialidad());
+        }
+        if (profesional.getCorreo() != null) {
+            existente.setCorreo(profesional.getCorreo());
+        }
+        if (profesional.getTelefono() != null) {
+            existente.setTelefono(profesional.getTelefono());
+        }
+
+        MsProfesional actualizado = repository.save(existente);
+        log.info("Profesional actualizado parcialmente con id: {}", actualizado.getId());
+        return actualizado;
+    }
+
     public void eliminar(Long id) {
         log.info("Eliminando profesional con id: {}", id);
         MsProfesional existente = buscarPorId(id);
