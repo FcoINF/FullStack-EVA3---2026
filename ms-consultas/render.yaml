@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: ms-consultas
+    env: java
+    region: oregon
+    plan: free
+    buildCommand: ./mvnw clean package -DskipTests -pl ms-consultas -am
+    startCommand: java -jar ms-consultas/target/ms-consultas-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: consultas-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: consultas-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: consultas-db
+          property: password
+
+databases:
+  - name: consultas-db
+    databaseName: consultasdb
+    plan: free
+    region: oregon
