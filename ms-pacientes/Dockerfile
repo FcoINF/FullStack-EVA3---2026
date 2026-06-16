@@ -1,17 +1,26 @@
-FROM maven:3.9-eclipse-temurin-17 AS build
+FROM maven:3.9.9-eclipse-temurin-17 AS build
 WORKDIR /app
 
-COPY pom.xml .
-RUN mvn dependency:go-offline -B
+COPY pom.xml pom.xml
+COPY api-gateway/pom.xml api-gateway/pom.xml
+COPY ms-consultas/pom.xml ms-consultas/pom.xml
+COPY ms-farmacia/pom.xml ms-farmacia/pom.xml
+COPY ms-pacientes/pom.xml ms-pacientes/pom.xml
+COPY ms-profesionales/pom.xml ms-profesionales/pom.xml
+COPY ms-programas/pom.xml ms-programas/pom.xml
+COPY ms-recetas/pom.xml ms-recetas/pom.xml
+COPY .mvn .mvn
+COPY mvnw mvnw
+COPY mvnw.cmd mvnw.cmd
 
-COPY src ./src
-RUN mvn clean package -DskipTests
+RUN mvn dependency:go-offline -pl ms-pacientes -am -q
+
+COPY ms-pacientes/src ms-pacientes/src
+
+RUN mvn clean package -DskipTests -pl ms-pacientes -am -q
 
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-
-COPY --from=build /app/target/*.jar app.jar
-
-EXPOSE 8082
-
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+COPY --from=build /app/ms-pacientes/target/ms-pacientes-0.0.1-SNAPSHOT.jar app.jar
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]

@@ -1,28 +1,28 @@
 services:
   - type: web
-    name: ms-consultas
+    name: ms-pacientes
     env: docker
     region: oregon
     plan: free
-    dockerfilePath: ./ms-consultas/Dockerfile
+    dockerfilePath: ./ms-pacientes/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: render
       - key: SPRING_DATASOURCE_URL
         fromDatabase:
-          name: consultas-db
+          name: pacientes-db
           property: connectionString
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
-          name: consultas-db
+          name: pacientes-db
           property: user
       - key: SPRING_DATASOURCE_PASSWORD
         fromDatabase:
-          name: consultas-db
+          name: pacientes-db
           property: password
 
 databases:
-  - name: consultas-db
-    databaseName: consultasdb
+  - name: pacientes-db
+    databaseName: pacientesdb
     plan: free
     region: oregon
