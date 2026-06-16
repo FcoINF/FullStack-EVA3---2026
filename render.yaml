@@ -1,11 +1,10 @@
 services:
   - type: web
     name: ms-consultas
-    env: java
+    env: docker
     region: oregon
     plan: free
-    buildCommand: ./mvnw clean package -DskipTests -pl ms-consultas -am
-    startCommand: java -jar ms-consultas/target/ms-consultas-0.0.1-SNAPSHOT.jar
+    dockerfilePath: ./ms-consultas/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: render
