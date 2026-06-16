@@ -1,0 +1,56 @@
+services:
+  ms-profesionales:
+    build: ./ms-profesionales
+    container_name: ms-profesionales
+    ports:
+      - "8081:8081"
+
+  ms-pacientes:
+    build: ./ms-pacientes
+    container_name: ms-pacientes
+    ports:
+      - "8082:8082"
+
+  ms-recetas:
+    build: ./ms-recetas
+    container_name: ms-recetas
+    ports:
+      - "8083:8083"
+
+  ms-consultas:
+    build: ./ms-consultas
+    container_name: ms-consultas
+    ports:
+      - "8084:8084"
+
+  ms-programas:
+    build: ./ms-programas
+    container_name: ms-programas
+    ports:
+      - "8085:8085"
+
+  ms-farmacia:
+    build: ./ms-farmacia
+    container_name: ms-farmacia
+    ports:
+      - "8086:8086"
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      MS_PROFESIONALES_URI: http://ms-profesionales:8081
+      MS_PACIENTES_URI: http://ms-pacientes:8082
+      MS_RECETAS_URI: http://ms-recetas:8083
+      MS_CONSULTAS_URI: http://ms-consultas:8084
+      MS_PROGRAMAS_URI: http://ms-programas:8085
+      MS_FARMACIA_URI: http://ms-farmacia:8086
+    depends_on:
+      - ms-profesionales
+      - ms-pacientes
+      - ms-recetas
+      - ms-consultas
+      - ms-programas
+      - ms-farmacia

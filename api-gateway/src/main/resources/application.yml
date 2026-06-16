@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: profesionales-route
+          uri: ${MS_PROFESIONALES_URI:http://localhost:8081}
+          predicates:
+            - Path=/redsalud/v1/profesionales/**
+
+        - id: pacientes-route
+          uri: ${MS_PACIENTES_URI:http://localhost:8082}
+          predicates:
+            - Path=/redsalud/v1/pacientes/**
+
+        - id: recetas-route
+          uri: ${MS_RECETAS_URI:http://localhost:8083}
+          predicates:
+            - Path=/redsalud/v1/recetas/**
+
+        - id: consultas-route
+          uri: ${MS_CONSULTAS_URI:http://localhost:8084}
+          predicates:
+            - Path=/redsalud/v1/consultas/**
+
+        - id: programas-route
+          uri: ${MS_PROGRAMAS_URI:http://localhost:8085}
+          predicates:
+            - Path=/redsalud/v1/programas/*
+
+        - id: farmacia-route
+          uri: ${MS_FARMACIA_URI:http://localhost:8086}
+          predicates:
+            - Path=/redsalud/v1/farmacia/**
