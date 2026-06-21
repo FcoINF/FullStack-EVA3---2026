@@ -110,6 +110,48 @@ class MsProfesionalServiceTest {
     }
 
     @Test
+    @DisplayName("patch modifica solo campos no nulos")
+    void patch_conCamposParciales_actualizaSoloEsos() {
+        MsProfesional existente = new MsProfesional();
+        existente.setId(1L);
+        existente.setNombre("Original");
+        existente.setEspecialidad("Cardiologia");
+        existente.setCorreo("orig@cl");
+        existente.setTelefono("111");
+
+        MsProfesional parcial = new MsProfesional();
+        parcial.setEspecialidad("Neurologia");
+
+        when(repository.findById(1L)).thenReturn(Optional.of(existente));
+        when(repository.save(existente)).thenReturn(existente);
+
+        MsProfesional resultado = service.patch(1L, parcial);
+
+        assertThat(resultado.getEspecialidad()).isEqualTo("Neurologia");
+        assertThat(resultado.getNombre()).isEqualTo("Original");
+        assertThat(resultado.getCorreo()).isEqualTo("orig@cl");
+        verify(repository).save(existente);
+    }
+
+    @Test
+    @DisplayName("patch con todos los campos nulos no modifica nada")
+    void patch_conTodosNull_noModifica() {
+        MsProfesional existente = new MsProfesional();
+        existente.setId(1L);
+        existente.setNombre("Original");
+        existente.setEspecialidad("Cardiologia");
+
+        when(repository.findById(1L)).thenReturn(Optional.of(existente));
+        when(repository.save(existente)).thenReturn(existente);
+
+        MsProfesional resultado = service.patch(1L, new MsProfesional());
+
+        assertThat(resultado.getNombre()).isEqualTo("Original");
+        assertThat(resultado.getEspecialidad()).isEqualTo("Cardiologia");
+        verify(repository).save(existente);
+    }
+
+    @Test
     @DisplayName("eliminar borra profesional cuando existe")
     void eliminar_cuandoExiste_borra() {
         MsProfesional p = new MsProfesional();

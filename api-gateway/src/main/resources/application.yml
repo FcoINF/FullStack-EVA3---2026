@@ -31,7 +31,7 @@ spring:
         - id: programas-route
           uri: ${MS_PROGRAMAS_URI:http://localhost:8085}
           predicates:
-            - Path=/redsalud/v1/programas/*
+            - Path=/redsalud/v1/programas/**
 
         - id: farmacia-route
           uri: ${MS_FARMACIA_URI:http://localhost:8086}

@@ -123,6 +123,45 @@ class consultasServiceTest {
     }
 
     @Test
+    @DisplayName("patch modifica solo campos no nulos del DTO")
+    void patch_conCamposParciales_actualizaSoloEsos() {
+        consultas existente = new consultas();
+        existente.setId(1L);
+        existente.setNombrePaciente("Original");
+        existente.setModalidad("Presencial");
+
+        ConsultasDTO parcial = new ConsultasDTO();
+        parcial.setModalidad("Remota");
+
+        when(repository.findById(1L)).thenReturn(Optional.of(existente));
+        when(repository.save(existente)).thenReturn(existente);
+
+        consultas resultado = service.patch(1L, parcial);
+
+        assertThat(resultado.getModalidad()).isEqualTo("Remota");
+        assertThat(resultado.getNombrePaciente()).isEqualTo("Original");
+        verify(repository).save(existente);
+    }
+
+    @Test
+    @DisplayName("patch con todos los campos nulos no modifica nada")
+    void patch_conTodosNull_noModifica() {
+        consultas existente = new consultas();
+        existente.setId(1L);
+        existente.setNombrePaciente("Original");
+        existente.setModalidad("Presencial");
+
+        when(repository.findById(1L)).thenReturn(Optional.of(existente));
+        when(repository.save(existente)).thenReturn(existente);
+
+        consultas resultado = service.patch(1L, new ConsultasDTO());
+
+        assertThat(resultado.getNombrePaciente()).isEqualTo("Original");
+        assertThat(resultado.getModalidad()).isEqualTo("Presencial");
+        verify(repository).save(existente);
+    }
+
+    @Test
     @DisplayName("eliminar borra consulta cuando existe")
     void eliminar_cuandoExiste_borra() {
         consultas consulta = new consultas();
