@@ -111,6 +111,55 @@ class pacientesServiceTest {
     }
 
     @Test
+    @DisplayName("patch modifica solo campos no nulos")
+    void patch_conCamposParciales_actualizaSoloEsos() {
+        pacientes existente = new pacientes();
+        existente.setId(1L);
+        existente.setNombre("Original");
+        existente.setDireccion("Original Dir");
+        existente.setResidencia("Original Res");
+        existente.setEmail("orig@cl");
+        existente.setTelefono("111");
+
+        pacientes parcial = new pacientes();
+        parcial.setDireccion("Nueva Dir");
+        parcial.setEmail("nuevo@cl");
+
+        when(repository.findById(1L)).thenReturn(Optional.of(existente));
+        when(repository.save(existente)).thenReturn(existente);
+
+        pacientes resultado = service.patch(1L, parcial);
+
+        assertThat(resultado.getDireccion()).isEqualTo("Nueva Dir");
+        assertThat(resultado.getEmail()).isEqualTo("nuevo@cl");
+        assertThat(resultado.getNombre()).isEqualTo("Original");
+        assertThat(resultado.getResidencia()).isEqualTo("Original Res");
+        assertThat(resultado.getTelefono()).isEqualTo("111");
+        verify(repository).save(existente);
+    }
+
+    @Test
+    @DisplayName("patch con todos los campos nulos no modifica nada")
+    void patch_conTodosNull_noModifica() {
+        pacientes existente = new pacientes();
+        existente.setId(1L);
+        existente.setNombre("Original");
+        existente.setDireccion("Dir");
+        existente.setResidencia("Res");
+        existente.setEmail("a@b.cl");
+        existente.setTelefono("123");
+
+        when(repository.findById(1L)).thenReturn(Optional.of(existente));
+        when(repository.save(existente)).thenReturn(existente);
+
+        pacientes resultado = service.patch(1L, new pacientes());
+
+        assertThat(resultado.getNombre()).isEqualTo("Original");
+        assertThat(resultado.getDireccion()).isEqualTo("Dir");
+        verify(repository).save(existente);
+    }
+
+    @Test
     @DisplayName("eliminar borra paciente cuando existe")
     void eliminar_cuandoExiste_borra() {
         pacientes p = new pacientes();

@@ -112,6 +112,47 @@ class recetasServiceTest {
     }
 
     @Test
+    @DisplayName("patch modifica solo campos no nulos")
+    void patch_conCamposParciales_actualizaSoloEsos() {
+        recetas existente = new recetas();
+        existente.setId(1L);
+        existente.setNombrePaciente("Original");
+        existente.setNombreMedicamentos("Paracetamol");
+        existente.setIndicacionesMedicas("1 cada 8h");
+
+        recetas parcial = new recetas();
+        parcial.setIndicacionesMedicas("1 cada 6h");
+
+        when(repository.findById(1L)).thenReturn(Optional.of(existente));
+        when(repository.save(existente)).thenReturn(existente);
+
+        recetas resultado = service.patch(1L, parcial);
+
+        assertThat(resultado.getIndicacionesMedicas()).isEqualTo("1 cada 6h");
+        assertThat(resultado.getNombrePaciente()).isEqualTo("Original");
+        assertThat(resultado.getNombreMedicamentos()).isEqualTo("Paracetamol");
+        verify(repository).save(existente);
+    }
+
+    @Test
+    @DisplayName("patch con todos los campos nulos no modifica nada")
+    void patch_conTodosNull_noModifica() {
+        recetas existente = new recetas();
+        existente.setId(1L);
+        existente.setNombrePaciente("Original");
+        existente.setNombreMedicamentos("Paracetamol");
+
+        when(repository.findById(1L)).thenReturn(Optional.of(existente));
+        when(repository.save(existente)).thenReturn(existente);
+
+        recetas resultado = service.patch(1L, new recetas());
+
+        assertThat(resultado.getNombrePaciente()).isEqualTo("Original");
+        assertThat(resultado.getNombreMedicamentos()).isEqualTo("Paracetamol");
+        verify(repository).save(existente);
+    }
+
+    @Test
     @DisplayName("eliminar borra receta cuando existe")
     void eliminar_cuandoExiste_borra() {
         recetas r = new recetas();

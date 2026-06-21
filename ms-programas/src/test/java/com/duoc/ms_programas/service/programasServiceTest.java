@@ -111,6 +111,50 @@ class programasServiceTest {
     }
 
     @Test
+    @DisplayName("patch modifica solo campos no nulos")
+    void patch_conCamposParciales_actualizaSoloEsos() {
+        programas existente = new programas();
+        existente.setId(1L);
+        existente.setNombrePrograma("Original");
+        existente.setNombreEncargado("Dr. Original");
+        existente.setTipoPrograma("Preventivo");
+        existente.setLugarPrograma("Santiago");
+
+        programas parcial = new programas();
+        parcial.setNombreEncargado("Dr. Nuevo");
+        parcial.setTipoPrograma("Educativo");
+
+        when(repository.findById(1L)).thenReturn(Optional.of(existente));
+        when(repository.save(existente)).thenReturn(existente);
+
+        programas resultado = service.patch(1L, parcial);
+
+        assertThat(resultado.getNombreEncargado()).isEqualTo("Dr. Nuevo");
+        assertThat(resultado.getTipoPrograma()).isEqualTo("Educativo");
+        assertThat(resultado.getNombrePrograma()).isEqualTo("Original");
+        assertThat(resultado.getLugarPrograma()).isEqualTo("Santiago");
+        verify(repository).save(existente);
+    }
+
+    @Test
+    @DisplayName("patch con todos los campos nulos no modifica nada")
+    void patch_conTodosNull_noModifica() {
+        programas existente = new programas();
+        existente.setId(1L);
+        existente.setNombrePrograma("Original");
+        existente.setLugarPrograma("Santiago");
+
+        when(repository.findById(1L)).thenReturn(Optional.of(existente));
+        when(repository.save(existente)).thenReturn(existente);
+
+        programas resultado = service.patch(1L, new programas());
+
+        assertThat(resultado.getNombrePrograma()).isEqualTo("Original");
+        assertThat(resultado.getLugarPrograma()).isEqualTo("Santiago");
+        verify(repository).save(existente);
+    }
+
+    @Test
     @DisplayName("eliminar borra programa cuando existe")
     void eliminar_cuandoExiste_borra() {
         programas p = new programas();

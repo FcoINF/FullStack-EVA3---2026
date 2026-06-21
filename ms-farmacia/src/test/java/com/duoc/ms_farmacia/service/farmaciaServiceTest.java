@@ -122,6 +122,47 @@ class farmaciaServiceTest {
     }
 
     @Test
+    @DisplayName("patch modifica solo campos no nulos del DTO")
+    void patch_conCamposParciales_actualizaSoloEsos() {
+        farmacia existente = new farmacia();
+        existente.setId(1L);
+        existente.setMedicamentos("Original");
+        existente.setStockMedicamentos(100);
+        existente.setEncargadoNombre("Ana");
+
+        FarmaciaDTO parcial = new FarmaciaDTO();
+        parcial.setStockMedicamentos(200);
+
+        when(repository.findById(1L)).thenReturn(Optional.of(existente));
+        when(repository.save(existente)).thenReturn(existente);
+
+        farmacia resultado = service.patch(1L, parcial);
+
+        assertThat(resultado.getStockMedicamentos()).isEqualTo(200);
+        assertThat(resultado.getMedicamentos()).isEqualTo("Original");
+        assertThat(resultado.getEncargadoNombre()).isEqualTo("Ana");
+        verify(repository).save(existente);
+    }
+
+    @Test
+    @DisplayName("patch con todos los campos nulos no modifica nada")
+    void patch_conTodosNull_noModifica() {
+        farmacia existente = new farmacia();
+        existente.setId(1L);
+        existente.setMedicamentos("Original");
+        existente.setStockMedicamentos(100);
+
+        when(repository.findById(1L)).thenReturn(Optional.of(existente));
+        when(repository.save(existente)).thenReturn(existente);
+
+        farmacia resultado = service.patch(1L, new FarmaciaDTO());
+
+        assertThat(resultado.getMedicamentos()).isEqualTo("Original");
+        assertThat(resultado.getStockMedicamentos()).isEqualTo(100);
+        verify(repository).save(existente);
+    }
+
+    @Test
     @DisplayName("eliminar borra medicamento cuando existe")
     void eliminar_cuandoExiste_borra() {
         farmacia f = new farmacia();
