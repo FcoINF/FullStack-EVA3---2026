@@ -43,6 +43,30 @@ especialmente para adultos mayores y personas sin RUT, mediante un sistema de **
 | 5 | ms-programas     | 8085   | Administración de programas comunitarios de salud. |
 | 6 | ms-farmacia      | 8086   | Control de stock y vencimiento de medicamentos. |
 
+## 🌐 API Gateway
+El **API Gateway** funciona como punto único de entrada al sistema. A continuación se muestran
+las rutas configuradas:
+
+| Microservicio   | Ruta Gateway                        | Puerto |
+|-----------------|-------------------------------------|--------|
+| Profesionales   | `/redsalud/v1/profesionales/**`     | 8081   |
+| Pacientes       | `/redsalud/v1/pacientes/**`         | 8082   |
+| Recetas         | `/redsalud/v1/recetas/**`           | 8083   |
+| Consultas       | `/redsalud/v1/consultas/**`         | 8084   |
+| Programas       | `/redsalud/v1/programas/**`         | 8085   |
+| Farmacia        | `/redsalud/v1/farmacia/**`          | 8086   |
+
+---
+
+## 📑 Documentación Swagger
+Cada microservicio expone su documentación en Swagger UI:
+- Profesionales → `http://localhost:8081/swagger-ui.html`
+- Pacientes → `http://localhost:8082/swagger-ui.html`
+- Recetas → `http://localhost:8083/swagger-ui.html`
+- Consultas → `http://localhost:8084/swagger-ui.html`
+- Programas → `http://localhost:8085/swagger-ui.html`
+- Farmacia → `http://localhost:8086/swagger-ui.html`
+
 
 
 ##  Tecnologías Utilizadas
