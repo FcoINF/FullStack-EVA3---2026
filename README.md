@@ -22,7 +22,7 @@ especialmente para adultos mayores y personas sin RUT, mediante un sistema de **
 - Gestión de consultas médicas presenciales y remotas.
 - Administración de recetas y stock de medicamentos.
 - Organización de programas comunitarios de salud.
-- Comunicación entre servicios mediante **FeignClient/WebClient**.
+- Comunicación entre servicios mediante **API Gateway**.
 - Centralización de rutas con **API Gateway** y documentación con **Swagger/OpenAPI**.
 
 
@@ -72,12 +72,12 @@ Cada microservicio expone su documentación en Swagger UI:
 ##  Tecnologías Utilizadas
 - **Java 17 / Spring Boot 3.x**
 - **Spring Data JPA + Hibernate**
-- **MySQL / PostgreSQL / H2**
-- **FeignClient / WebClient** para comunicación interna
+- **PostgreSQL / H2**
+- **API Gateway** para enrutamiento centralizado
 - **Swagger/OpenAPI** para documentación de APIs
 - **Docker** para contenerización y despliegue local
 - **Render** para despliegue remoto
-- **GitHub + Jira** para control de versiones y gestión de tareas
+- **GitHub + ClickUp** para control de versiones y gestión de tareas
 - **Postman** para pruebas de endpoints
 
 ## Cómo Ejecutar el Proyecto
