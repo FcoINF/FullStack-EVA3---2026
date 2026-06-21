@@ -28,7 +28,7 @@ spring:
           predicates:
             - Path=/redsalud/v1/consultas/**
 
-        - id: programas-route
+        - id: progrsamas-route
           uri: ${MS_PROGRAMAS_URI:http://localhost:8085}
           predicates:
             - Path=/redsalud/v1/programas/*

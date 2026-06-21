@@ -1,5 +1,5 @@
 # DSY1103-RedSaludPatag-nica
-Proyecto Semestral EP2 — DSY1103 — RedSaludPatagónica
+Proyecto Semestral EP3 — DSY1103 — RedSaludPatagónica
 
 # RedSaludPatagónica — DSY1103 Desarrollo FullStack 1
 
@@ -15,9 +15,15 @@ plataforma que coordine las consultas remotas, el stock de medicamentos en cada 
 de pacientes cuando es necesario (en avioneta o lancha) y el registro de las fichas clínicas de una
 población rural dispersa.
 
-El sistema resuelve la dificultad de acceso a la atención médica para adultos mayores
-y personas que no cuentan con RUT, permitiendo su registro mediante datos alternativos como nombre, 
-dirección y fecha de nacimiento.
+El proyecto busca resolver la dificultad de acceso a la atención médica en comunidades rurales dispersas,
+especialmente para adultos mayores y personas sin RUT, mediante un sistema de **microservicios en Spring Boot** que permite:
+
+- Registro alternativo de pacientes (nombre, dirección, fecha de nacimiento).
+- Gestión de consultas médicas presenciales y remotas.
+- Administración de recetas y stock de medicamentos.
+- Organización de programas comunitarios de salud.
+- Comunicación entre servicios mediante **FeignClient/WebClient**.
+- Centralización de rutas con **API Gateway** y documentación con **Swagger/OpenAPI**.
 
 
 ## Equipo
@@ -27,30 +33,35 @@ dirección y fecha de nacimiento.
 | Francisco Molina | @FcoINF |
 
 
-## Microservicios Implementados
-| # | Microservicio    | Puerto | Descripción                                                                        |
-|---|------------------|--------|------------------------------------------------------------------------------------|
-| 1 | ms-profesionales | 8081   | Profesionales capacitados para asistir a los pacientes de manera exitosa.          |
-| 2 | ms-pacientes     | 8082   | Usuarios del centro de salud que necesitan de los servicios profesionales.         |
-| 3 | ms-recetas       | 8083   | Preinscripciones en base a consultas médicas enfocadas en solventar problemáticas. |
-| 4 | ms-consultas     | 8084   | Registro de consultas médicas, presenciales y remotas para los pacientes.          |
-| 5 | ms-programas     | 8085   | Programas de salud que la institución ofrece a la comunidad.                       |
-| 6 | ms-farmacias     | 8086   | Centro de distribución de medicamentos para los locatarios en base a ms-recetas.   |
+##  Microservicios Implementados
+| # | Microservicio    | Puerto | Descripción |
+|---|------------------|--------|-------------|
+| 1 | ms-profesionales | 8081   | Gestión de médicos y TENS. |
+| 2 | ms-pacientes     | 8082   | Registro de pacientes, incluso sin RUT. |
+| 3 | ms-recetas       | 8083   | Emisión de recetas médicas derivadas de consultas. |
+| 4 | ms-consultas     | 8084   | Registro de consultas médicas presenciales y remotas. |
+| 5 | ms-programas     | 8085   | Administración de programas comunitarios de salud. |
+| 6 | ms-farmacia      | 8086   | Control de stock y vencimiento de medicamentos. |
 
 
 
-## Tecnologías Utilizadas
-- Java 17 / Spring Boot 3.x
-- JPA + Hibernate
-- MySQL / PostgreSQL
-- WebClient / Feign Client
-- SLF4J para logs
+##  Tecnologías Utilizadas
+- **Java 17 / Spring Boot 3.x**
+- **Spring Data JPA + Hibernate**
+- **MySQL / PostgreSQL / H2**
+- **FeignClient / WebClient** para comunicación interna
+- **Swagger/OpenAPI** para documentación de APIs
+- **Docker** para contenerización y despliegue local
+- **Render** para despliegue remoto
+- **GitHub + Jira** para control de versiones y gestión de tareas
+- **Postman** para pruebas de endpoints
 
 ## Cómo Ejecutar el Proyecto
 1. Clonar el repositorio: `git clone [URL]`
 2. Configurar la base de datos en `application.properties`
 3. Ejecutar cada microservicio: `./mvnw spring-boot:run`
+4. Acceder a la documentación Swagger en: `http://localhost:{puerto}/swagger-ui.html`
 
 ## Estado del Proyecto
-🔄 Finalizado — EP2 2025
+🔄 Finalizado — EP3 2025
 
