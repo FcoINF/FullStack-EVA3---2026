@@ -35,6 +35,7 @@ public class programasController {
             @ApiResponse(responseCode = "200", description = "Consulta exitosa"),
             @ApiResponse(responseCode = "500", description = "Error interno")
     })
+    // GET /redsalud/v1/programas - trae todos los programas
     @GetMapping
     public ResponseEntity<List<programas>> listarTodos() {
         log.info("GET /redsalud/v1/programas - listando programas");
@@ -48,6 +49,7 @@ public class programasController {
             @ApiResponse(responseCode = "404", description = "Programa no encontrado"),
             @ApiResponse(responseCode = "400", description = "Id invalido")
     })
+    // GET /redsalud/v1/programas/{id} - busca un programa por su ID
     @GetMapping("/{id}")
     public ResponseEntity<programas> buscarPorId(@PathVariable Long id) {
         log.info("GET /redsalud/v1/programas/{}", id);
@@ -61,6 +63,7 @@ public class programasController {
             @ApiResponse(responseCode = "400", description = "Datos invalidos"),
             @ApiResponse(responseCode = "500", description = "Error interno al crear el programa")
     })
+    // POST /redsalud/v1/programas - agrega un programa nuevo
     @PostMapping
     public ResponseEntity<programas> crear(@Valid @RequestBody programas programa) {
         log.info("POST /redsalud/v1/programas - creando programa: {}", programa.getNombrePrograma());
@@ -75,12 +78,14 @@ public class programasController {
             @ApiResponse(responseCode = "404", description = "Programa no encontrado"),
             @ApiResponse(responseCode = "400", description = "Datos invalidos")
     })
+    // PUT /redsalud/v1/programas/{id} - reemplaza todos los datos de un programa
     @PutMapping("/{id}")
     public ResponseEntity<programas> actualizar(@PathVariable Long id, @Valid @RequestBody programas programa) {
         log.info("PUT /redsalud/v1/programas/{}", id);
         return ResponseEntity.ok(service.actualizar(id, programa));
     }
 
+    // PATCH /redsalud/v1/programas/{id} - actualiza solo algunos campos del programa
     @PatchMapping("/{id}")
     public ResponseEntity<programas> patch(
             @PathVariable Long id,
@@ -97,6 +102,7 @@ public class programasController {
             @ApiResponse(responseCode = "204", description = "Programa eliminado"),
             @ApiResponse(responseCode = "500", description = "Error interno al eliminar programa")
     })
+    // DELETE /redsalud/v1/programas/{id} - elimina un programa
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         log.info("DELETE /redsalud/v1/programas/{}", id);

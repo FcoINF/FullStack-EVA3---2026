@@ -35,6 +35,7 @@ public class pacientesController {
             @ApiResponse(responseCode = "200", description = "Consulta exitosa"),
             @ApiResponse(responseCode = "500", description = "Error interno")
     })
+    // GET /redsalud/v1/pacientes - trae a todos los pacientes
     @GetMapping
     public ResponseEntity<List<pacientes>> listarTodos() {
         log.info("GET /redsalud/v1/pacientes - listando pacientes");
@@ -48,6 +49,7 @@ public class pacientesController {
             @ApiResponse(responseCode = "404", description = "Paciente no encontrado"),
             @ApiResponse(responseCode = "400", description = "Id invalido")
     })
+    // GET /redsalud/v1/pacientes/{id} - busca un paciente por su ID
     @GetMapping("/{id}")
     public ResponseEntity<pacientes> buscarPorId(@PathVariable Long id) {
         log.info("GET /redsalud/v1/pacientes/{}", id);
@@ -61,6 +63,7 @@ public class pacientesController {
             @ApiResponse(responseCode = "400", description = "Datos invalidos"),
             @ApiResponse(responseCode = "500", description = "Error interno al crear al paciente")
     })
+    // POST /redsalud/v1/pacientes - agrega un paciente nuevo
     @PostMapping
     public ResponseEntity<pacientes> crear(@Valid @RequestBody pacientes paciente) {
         log.info("POST /redsalud/v1/pacientes - creando paciente: {}", paciente.getNombre());
@@ -75,12 +78,14 @@ public class pacientesController {
             @ApiResponse(responseCode = "404", description = "Paciente no encontrado"),
             @ApiResponse(responseCode = "400", description = "Datos invalidos")
     })
+    // PUT /redsalud/v1/pacientes/{id} - reemplaza todos los datos de un paciente
     @PutMapping("/{id}")
     public ResponseEntity<pacientes> actualizar(@PathVariable Long id, @RequestBody pacientes paciente) {
         log.info("PUT /redsalud/v1/pacientes/{}", id);
         return ResponseEntity.ok(service.actualizar(id, paciente));
     }
 
+    // PATCH /redsalud/v1/pacientes/{id} - actualiza solo algunos campos del paciente
     @PatchMapping("/{id}")
     public ResponseEntity<pacientes> patchPaciente(
             @PathVariable Long id,
@@ -96,6 +101,7 @@ public class pacientesController {
             @ApiResponse(responseCode = "204", description = "Paciente eliminado"),
             @ApiResponse(responseCode = "500", description = "Error interno al eliminar paciente")
     })
+    // DELETE /redsalud/v1/pacientes/{id} - elimina un paciente
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         log.info("DELETE /redsalud/v1/pacientes/{}", id);

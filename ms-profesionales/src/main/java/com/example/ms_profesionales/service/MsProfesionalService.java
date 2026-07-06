@@ -18,6 +18,7 @@ public class MsProfesionalService {
         this.repository = repository;
     }
 
+    // Trae todos los profesionales de la BD
     public List<MsProfesional> listarTodos() {
         log.info("Listando todos los profesionales");
         List<MsProfesional> lista = repository.findAll();
@@ -25,6 +26,7 @@ public class MsProfesionalService {
         return lista;
     }
 
+    // Busca un profesional por su ID, si no existe lanza error
     public MsProfesional buscarPorId(Long id) {
         log.info("Buscando profesional con id: {}", id);
         return repository.findById(id)
@@ -34,6 +36,7 @@ public class MsProfesionalService {
                 });
     }
 
+    // Guarda un nuevo profesional en la BD
     public MsProfesional guardar(MsProfesional profesional) {
         log.info("Creando nuevo profesional: {}", profesional.getNombre());
         MsProfesional creado = repository.save(profesional);
@@ -41,6 +44,7 @@ public class MsProfesionalService {
         return creado;
     }
 
+    // Reemplaza todos los datos de un profesional existente
     public MsProfesional actualizar(Long id, MsProfesional profesional) {
         log.info("Actualizando profesional con id: {}", id);
         MsProfesional p = buscarPorId(id);
@@ -53,6 +57,7 @@ public class MsProfesionalService {
         return guardado;
     }
 
+    // Actualiza solo los campos que vienen con datos (no nulos) de un profesional
     public MsProfesional patch(Long id, MsProfesional profesional) {
         log.info("Actualizando parcialmente profesional con id: {}", id);
 
@@ -76,6 +81,7 @@ public class MsProfesionalService {
         return actualizado;
     }
 
+    // Elimina un profesional de la BD
     public void eliminar(Long id) {
         log.info("Eliminando profesional con id: {}", id);
         MsProfesional existente = buscarPorId(id);
