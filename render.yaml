@@ -1,4 +1,5 @@
 services:
+  # ─── ms-pacientes ──────────────────────────────────────
   - type: web
     name: ms-pacientes
     env: docker
@@ -10,27 +11,182 @@ services:
         value: render
       - key: RENDER_DB_HOST
         fromDatabase:
-          name: pacientes-db
+          name: redsalud-db
           property: host
       - key: RENDER_DB_PORT
         fromDatabase:
-          name: pacientes-db
+          name: redsalud-db
           property: port
       - key: RENDER_DB_NAME
         fromDatabase:
-          name: pacientes-db
+          name: redsalud-db
           property: database
       - key: RENDER_DB_USER
         fromDatabase:
-          name: pacientes-db
+          name: redsalud-db
           property: user
       - key: RENDER_DB_PASSWORD
         fromDatabase:
-          name: pacientes-db
+          name: redsalud-db
+          property: password
+
+  # ─── ms-profesionales ──────────────────────────────────
+  - type: web
+    name: ms-profesionales
+    env: docker
+    region: oregon
+    plan: free
+    dockerfilePath: ./ms-profesionales/Dockerfile
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: RENDER_DB_HOST
+        fromDatabase:
+          name: redsalud-db
+          property: host
+      - key: RENDER_DB_PORT
+        fromDatabase:
+          name: redsalud-db
+          property: port
+      - key: RENDER_DB_NAME
+        fromDatabase:
+          name: redsalud-db
+          property: database
+      - key: RENDER_DB_USER
+        fromDatabase:
+          name: redsalud-db
+          property: user
+      - key: RENDER_DB_PASSWORD
+        fromDatabase:
+          name: redsalud-db
+          property: password
+
+  # ─── ms-consultas ──────────────────────────────────────
+  - type: web
+    name: ms-consultas
+    env: docker
+    region: oregon
+    plan: free
+    dockerfilePath: ./ms-consultas/Dockerfile
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: RENDER_DB_HOST
+        fromDatabase:
+          name: redsalud-db
+          property: host
+      - key: RENDER_DB_PORT
+        fromDatabase:
+          name: redsalud-db
+          property: port
+      - key: RENDER_DB_NAME
+        fromDatabase:
+          name: redsalud-db
+          property: database
+      - key: RENDER_DB_USER
+        fromDatabase:
+          name: redsalud-db
+          property: user
+      - key: RENDER_DB_PASSWORD
+        fromDatabase:
+          name: redsalud-db
+          property: password
+
+  # ─── ms-farmacia ───────────────────────────────────────
+  - type: web
+    name: ms-farmacia
+    env: docker
+    region: oregon
+    plan: free
+    dockerfilePath: ./ms-farmacia/Dockerfile
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: RENDER_DB_HOST
+        fromDatabase:
+          name: redsalud-db
+          property: host
+      - key: RENDER_DB_PORT
+        fromDatabase:
+          name: redsalud-db
+          property: port
+      - key: RENDER_DB_NAME
+        fromDatabase:
+          name: redsalud-db
+          property: database
+      - key: RENDER_DB_USER
+        fromDatabase:
+          name: redsalud-db
+          property: user
+      - key: RENDER_DB_PASSWORD
+        fromDatabase:
+          name: redsalud-db
+          property: password
+
+  # ─── ms-programas ──────────────────────────────────────
+  - type: web
+    name: ms-programas
+    env: docker
+    region: oregon
+    plan: free
+    dockerfilePath: ./ms-programas/Dockerfile
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: RENDER_DB_HOST
+        fromDatabase:
+          name: redsalud-db
+          property: host
+      - key: RENDER_DB_PORT
+        fromDatabase:
+          name: redsalud-db
+          property: port
+      - key: RENDER_DB_NAME
+        fromDatabase:
+          name: redsalud-db
+          property: database
+      - key: RENDER_DB_USER
+        fromDatabase:
+          name: redsalud-db
+          property: user
+      - key: RENDER_DB_PASSWORD
+        fromDatabase:
+          name: redsalud-db
+          property: password
+
+  # ─── ms-recetas ────────────────────────────────────────
+  - type: web
+    name: ms-recetas
+    env: docker
+    region: oregon
+    plan: free
+    dockerfilePath: ./ms-recetas/Dockerfile
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: render
+      - key: RENDER_DB_HOST
+        fromDatabase:
+          name: redsalud-db
+          property: host
+      - key: RENDER_DB_PORT
+        fromDatabase:
+          name: redsalud-db
+          property: port
+      - key: RENDER_DB_NAME
+        fromDatabase:
+          name: redsalud-db
+          property: database
+      - key: RENDER_DB_USER
+        fromDatabase:
+          name: redsalud-db
+          property: user
+      - key: RENDER_DB_PASSWORD
+        fromDatabase:
+          name: redsalud-db
           property: password
 
 databases:
-  - name: pacientes-db
-    databaseName: pacientesdb
+  - name: redsalud-db
+    databaseName: redsaluddb
     plan: starter
     region: oregon
