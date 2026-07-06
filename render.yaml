@@ -188,5 +188,5 @@ services:
 databases:
   - name: redsalud-db
     databaseName: redsaluddb
-    plan: starter
+    plan: free
     region: oregon
