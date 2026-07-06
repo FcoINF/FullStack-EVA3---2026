@@ -13,14 +13,14 @@ COPY .mvn .mvn
 COPY mvnw mvnw
 COPY mvnw.cmd mvnw.cmd
 
-RUN mvn dependency:go-offline -pl ms-farmacia -am -q
+RUN mvn dependency:go-offline -pl ms-consultas -am -q
 
-COPY ms-farmacia/src ms-farmacia/src
+COPY ms-consultas/src ms-consultas/src
 
-RUN mvn clean package -DskipTests -pl ms-farmacia -am -q
+RUN mvn clean package -DskipTests -pl ms-consultas -am -q
 
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
-COPY --from=build /app/ms-farmacia/target/ms-farmacia-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/ms-consultas/target/ms-consultas-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
