@@ -18,6 +18,7 @@ public class pacientesService {
         this.repository = repository;
     }
 
+    // Guarda un nuevo paciente en la BD
     public pacientes crear(pacientes paciente) {
         log.info("Creando nuevo paciente: {}", paciente.getNombre());
         pacientes creado = repository.save(paciente);
@@ -25,6 +26,7 @@ public class pacientesService {
         return creado;
     }
 
+    // Trae todos los pacientes de la BD
     public List<pacientes> listarTodos() {
         log.info("Listando todos los pacientes");
         List<pacientes> lista = repository.findAll();
@@ -32,6 +34,7 @@ public class pacientesService {
         return lista;
     }
 
+    // Busca un paciente por su ID, si no existe lanza error
     public pacientes buscarPorId(Long id) {
         log.info("Buscando paciente con id: {}", id);
         return repository.findById(id)
@@ -41,6 +44,7 @@ public class pacientesService {
                 });
     }
 
+    // Reemplaza todos los datos de un paciente existente
     public pacientes actualizar(Long id, pacientes paciente) {
         log.info("Actualizando paciente con id: {}", id);
         pacientes p = buscarPorId(id);
@@ -56,6 +60,7 @@ public class pacientesService {
         return guardado;
     }
 
+    // Actualiza solo los campos que vienen con datos (no nulos) de un paciente
     public pacientes patch(Long id, pacientes paciente) {
         log.info("Actualizando parcialmente paciente con id: {}", id);
 
@@ -88,6 +93,7 @@ public class pacientesService {
         return actualizado;
     }
 
+    // Elimina un paciente de la BD
     public void eliminar(Long id) {
         log.info("Eliminando paciente con id: {}", id);
         pacientes existente = buscarPorId(id);

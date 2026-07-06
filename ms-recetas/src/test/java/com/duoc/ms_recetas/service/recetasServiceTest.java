@@ -85,9 +85,9 @@ class recetasServiceTest {
 
         recetas actualizado = new recetas();
         actualizado.setNombrePaciente("Modificado");
-        actualizado.setIdPaciente(123);
+        actualizado.setIdPaciente(2);
         actualizado.setNombreProfesional("Dr.");
-        actualizado.setIdProfesional(456);
+        actualizado.setIdProfesional(5);
         actualizado.setNombreMedicamentos("Paracetamol");
         actualizado.setIndicacionesMedicas("1 cada 8h");
 
@@ -103,9 +103,9 @@ class recetasServiceTest {
     @Test
     @DisplayName("actualizar lanza excepcion cuando id no existe")
     void actualizar_cuandoNoExiste_lanzaExcepcion() {
-        when(repository.findById(999L)).thenReturn(Optional.empty());
+        when(repository.findById(1L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> service.actualizar(999L, new recetas()))
+        assertThatThrownBy(() -> service.actualizar(1L, new recetas()))
                 .isInstanceOf(ResourceNotFoundException.class);
 
         verify(repository, never()).save(any());

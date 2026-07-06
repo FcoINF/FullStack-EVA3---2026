@@ -19,6 +19,7 @@ public class consultasService {
         this.repository = repository;
     }
 
+    // Guarda una nueva consulta en la BD
     public consultas crear(ConsultasDTO dto) {
         log.info("Creando nueva consulta para paciente: {}", dto.getFichaPaciente());
         consultas entity = new consultas();
@@ -34,6 +35,7 @@ public class consultasService {
         return creada;
     }
 
+    // Trae todas las consultas de la BD
     public List<consultas> listarConsultas() {
         log.info("Listando todas las consultas");
         List<consultas> consultas = repository.findAll();
@@ -41,6 +43,7 @@ public class consultasService {
         return consultas;
     }
 
+    // Busca una consulta por su ID, si no existe lanza error
     public consultas buscarPorId(Long id) {
         log.info("Buscando consulta con id: {}", id);
         return repository.findById(id)
@@ -50,6 +53,7 @@ public class consultasService {
                 });
     }
 
+    // Reemplaza todos los datos de una consulta existente
     public consultas actualizar(Long id, consultas consultaActualizada) {
         log.info("Actualizando consulta con id: {}", id);
         consultas existente = buscarPorId(id);
@@ -65,6 +69,7 @@ public class consultasService {
         return guardada;
     }
 
+    // Actualiza solo los campos que vienen con datos (no nulos) de una consulta
     public consultas patch(Long id, ConsultasDTO dto) {
         log.info("Actualizando parcialmente consulta con id: {}", id);
 
@@ -96,6 +101,7 @@ public class consultasService {
         return actualizada;
     }
 
+    // Elimina una consulta de la BD
     public void eliminar(Long id) {
         log.info("Eliminando consulta con id: {}", id);
         consultas existente = buscarPorId(id);

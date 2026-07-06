@@ -35,6 +35,7 @@ public class recetasController {
             @ApiResponse(responseCode = "200", description = "Consulta exitosa"),
             @ApiResponse(responseCode = "500", description = "Error interno")
     })
+    // GET /redsalud/v1/recetas - trae todas las recetas
     @GetMapping
     public ResponseEntity<List<recetas>> listarRecetas() {
         log.info("GET /redsalud/v1/recetas - listando recetas");
@@ -48,6 +49,7 @@ public class recetasController {
             @ApiResponse(responseCode = "404", description = "Receta no encontrada"),
             @ApiResponse(responseCode = "400", description = "Id invalido")
     })
+    // GET /redsalud/v1/recetas/{id} - busca una receta por su ID
     @GetMapping("/{id}")
     public ResponseEntity<recetas> buscarPorId(@PathVariable Long id) {
         log.info("GET /redsalud/v1/recetas/{}", id);
@@ -61,6 +63,7 @@ public class recetasController {
             @ApiResponse(responseCode = "400", description = "Datos invalidos"),
             @ApiResponse(responseCode = "500", description = "Error interno al crear la receta")
     })
+    // POST /redsalud/v1/recetas - agrega una receta nueva
     @PostMapping
     public ResponseEntity<recetas> crear(@Valid @RequestBody recetas receta) {
         log.info("POST /redsalud/v1/recetas - creando receta");
@@ -75,12 +78,14 @@ public class recetasController {
             @ApiResponse(responseCode = "404", description = "Receta no encontrada"),
             @ApiResponse(responseCode = "400", description = "Datos invalidos")
     })
+    // PUT /redsalud/v1/recetas/{id} - reemplaza todos los datos de una receta
     @PutMapping("/{id}")
     public ResponseEntity<recetas> actualizar(@PathVariable Long id, @RequestBody recetas receta) {
         log.info("PUT /redsalud/v1/recetas/{}", id);
         return ResponseEntity.ok(service.actualizar(id, receta));
     }
 
+    // PATCH /redsalud/v1/recetas/{id} - actualiza solo algunos campos de la receta
     @PatchMapping("/{id}")
     public ResponseEntity<recetas> patch(
             @PathVariable Long id,
@@ -95,6 +100,7 @@ public class recetasController {
             @ApiResponse(responseCode = "204", description = "Receta eliminada"),
             @ApiResponse(responseCode = "500", description = "Error interno al eliminar la receta")
     })
+    // DELETE /redsalud/v1/recetas/{id} - elimina una receta
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         log.info("DELETE /redsalud/v1/recetas/{}", id);

@@ -35,6 +35,7 @@ public class MsProfesionalController {
             @ApiResponse(responseCode = "200", description = "Consulta exitosa"),
             @ApiResponse(responseCode = "500", description = "Error interno")
     })
+    // GET /redsalud/v1/profesionales - trae a todos los profesionales
     @GetMapping
     public ResponseEntity<List<MsProfesional>> listar() {
         log.info("GET /redsalud/v1/profesionales - listando profesionales");
@@ -48,6 +49,7 @@ public class MsProfesionalController {
             @ApiResponse(responseCode = "404", description = "Profesional no encontrado"),
             @ApiResponse(responseCode = "400", description = "Id invalido")
     })
+    // GET /redsalud/v1/profesionales/{id} - busca un profesional por su ID
     @GetMapping("/{id}")
     public ResponseEntity<MsProfesional> buscarPorId(@PathVariable Long id) {
         log.info("GET /redsalud/v1/profesionales/{}", id);
@@ -60,6 +62,7 @@ public class MsProfesionalController {
             @ApiResponse(responseCode = "201", description = "Profesional agregado"),
             @ApiResponse(responseCode = "400", description = "Datos invalidos")
     })
+    // POST /redsalud/v1/profesionales - agrega un profesional nuevo
     @PostMapping
     public ResponseEntity<MsProfesional> crear(@Valid @RequestBody MsProfesional profesional) {
         log.info("POST /redsalud/v1/profesionales - creando profesional: {}", profesional.getNombre());
@@ -74,12 +77,14 @@ public class MsProfesionalController {
             @ApiResponse(responseCode = "404", description = "Profesional no encontrado"),
             @ApiResponse(responseCode = "400", description = "Datos invalidos")
     })
+    // PUT /redsalud/v1/profesionales/{id} - reemplaza todos los datos de un profesional
     @PutMapping("/{id}")
     public ResponseEntity<MsProfesional> actualizar(@PathVariable Long id, @RequestBody MsProfesional profesional) {
         log.info("PUT /redsalud/v1/profesionales/{}", id);
         return ResponseEntity.ok(service.actualizar(id, profesional));
     }
 
+    // PATCH /redsalud/v1/profesionales/{id} - actualiza solo algunos campos del profesional
     @PatchMapping("/{id}")
     public ResponseEntity<MsProfesional> patch(
             @PathVariable Long id,
@@ -96,6 +101,7 @@ public class MsProfesionalController {
             @ApiResponse(responseCode = "204", description = "Profesional eliminado"),
             @ApiResponse(responseCode = "500", description = "Error al eliminar el profesional")
     })
+    // DELETE /redsalud/v1/profesionales/{id} - elimina un profesional
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         log.info("DELETE /redsalud/v1/profesionales/{}", id);

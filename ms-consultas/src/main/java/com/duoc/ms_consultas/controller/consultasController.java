@@ -36,6 +36,7 @@ public class consultasController {
             @ApiResponse(responseCode = "200", description = "Consulta exitosa"),
             @ApiResponse(responseCode = "500", description = "Error interno")
     })
+    // GET /redsalud/v1/consultas - trae todas las consultas
     @GetMapping
     public ResponseEntity<List<consultas>> listarConsultas() {
         log.info("GET /redsalud/v1/consultas - listando consultas");
@@ -49,6 +50,7 @@ public class consultasController {
             @ApiResponse(responseCode = "404", description = "Consulta no encontrada"),
             @ApiResponse(responseCode = "400", description = "Id invalido")
     })
+    // GET /redsalud/v1/consultas/{id} - busca una consulta por su ID
     @GetMapping("/{id}")
     public ResponseEntity<consultas> buscarPorId(@PathVariable Long id) {
         log.info("GET /redsalud/v1/consultas/{}", id);
@@ -62,6 +64,7 @@ public class consultasController {
             @ApiResponse(responseCode = "400", description = "Datos invalidos"),
             @ApiResponse(responseCode = "500", description = "Error interno al crear la consulta")
     })
+    // POST /redsalud/v1/consultas - agrega una consulta nueva
     @PostMapping
     public ResponseEntity<consultas> crear(@Valid @RequestBody ConsultasDTO consultaDTO) {
         log.info("POST /redsalud/v1/consultas - creando consulta");
@@ -76,6 +79,7 @@ public class consultasController {
             @ApiResponse(responseCode = "404", description = "Consulta no encontrada"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
+    // PUT /redsalud/v1/consultas/{id} - reemplaza todos los datos de una consulta
     @PutMapping("/{id}")
     public ResponseEntity<consultas> actualizar(@PathVariable Long id, @RequestBody consultas consulta) {
         log.info("PUT /redsalud/v1/consultas/{}", id);
@@ -89,6 +93,7 @@ public class consultasController {
             @ApiResponse(responseCode = "404", description = "Consulta no encontrada"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
+    // PATCH /redsalud/v1/consultas/{id} - actualiza solo algunos campos de la consulta
     @PatchMapping("/{id}")
     public ResponseEntity<consultas> patchConsulta(
             @PathVariable Long id,
@@ -103,6 +108,7 @@ public class consultasController {
             @ApiResponse(responseCode = "204", description = "Consulta eliminada"),
             @ApiResponse(responseCode = "500", description = "Error interno al eliminar la consulta")
     })
+    // DELETE /redsalud/v1/consultas/{id} - elimina una consulta
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         log.info("DELETE /redsalud/v1/consultas/{}", id);

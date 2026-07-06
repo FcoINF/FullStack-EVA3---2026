@@ -19,6 +19,7 @@ public class farmaciaService {
         this.repository = repository;
     }
 
+    // Guarda un nuevo medicamento en la BD
     public farmacia crear(FarmaciaDTO dto) {
         log.info("Creando nuevo medicamento: {}", dto.getMedicamentos());
         farmacia nueva = new farmacia();
@@ -34,6 +35,7 @@ public class farmaciaService {
         return creada;
     }
 
+    // Trae todos los medicamentos de la BD
     public List<farmacia> listarMedicamentos() {
         log.info("Listando todos los medicamentos");
         List<farmacia> lista = repository.findAll();
@@ -41,6 +43,7 @@ public class farmaciaService {
         return lista;
     }
 
+    // Busca un medicamento por su ID, si no existe lanza error
     public farmacia buscarPorId(Long id) {
         log.info("Buscando medicamento con id: {}", id);
         return repository.findById(id)
@@ -50,6 +53,7 @@ public class farmaciaService {
                 });
     }
 
+    // Reemplaza todos los datos de un medicamento existente
     public farmacia actualizar(Long id, FarmaciaDTO dto) {
         log.info("Actualizando medicamento con id: {}", id);
         farmacia f = buscarPorId(id);
@@ -65,6 +69,7 @@ public class farmaciaService {
         return guardada;
     }
 
+    // Actualiza solo los campos que vienen con datos (no nulos) de un medicamento
     public farmacia patch(Long id, FarmaciaDTO dto) {
         log.info("Actualizando parcialmente medicamento con id: {}", id);
 
@@ -97,6 +102,7 @@ public class farmaciaService {
         return actualizada;
     }
 
+    // Elimina un medicamento de la BD
     public void eliminar(Long id) {
         log.info("Eliminando medicamento con id: {}", id);
         farmacia existente = buscarPorId(id);

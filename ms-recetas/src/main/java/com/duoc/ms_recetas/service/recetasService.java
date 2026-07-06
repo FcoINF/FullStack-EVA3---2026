@@ -18,6 +18,7 @@ public class recetasService {
         this.repository = repository;
     }
 
+    // Guarda una nueva receta en la BD
     public recetas crear(recetas receta) {
         log.info("Creando nueva receta para paciente: {}", receta.getNombrePaciente());
         recetas creada = repository.save(receta);
@@ -25,6 +26,7 @@ public class recetasService {
         return creada;
     }
 
+    // Trae todas las recetas de la BD
     public List<recetas> listarRecetas() {
         log.info("Listando todas las recetas");
         List<recetas> lista = repository.findAll();
@@ -32,6 +34,7 @@ public class recetasService {
         return lista;
     }
 
+    // Busca una receta por su ID, si no existe lanza error
     public recetas buscarPorId(Long id) {
         log.info("Buscando receta con id: {}", id);
         return repository.findById(id)
@@ -41,6 +44,7 @@ public class recetasService {
                 });
     }
 
+    // Reemplaza todos los datos de una receta existente
     public recetas actualizar(Long id, recetas receta) {
         log.info("Actualizando receta con id: {}", id);
         recetas r = buscarPorId(id);
@@ -56,7 +60,7 @@ public class recetasService {
         return guardada;
     }
 
-
+    // Actualiza solo los campos que vienen con datos (no nulos) de una receta
     public recetas patch(Long id, recetas receta) {
         log.info("Actualizando parcialmente receta con id: {}", id);
 
@@ -89,6 +93,7 @@ public class recetasService {
         return actualizada;
     }
 
+    // Elimina una receta de la BD
     public void eliminar(Long id) {
         log.info("Eliminando receta con id: {}", id);
         recetas existente = buscarPorId(id);

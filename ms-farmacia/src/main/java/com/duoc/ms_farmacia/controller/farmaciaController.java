@@ -36,6 +36,7 @@ public class farmaciaController {
             @ApiResponse(responseCode = "200", description = "Consulta exitosa"),
             @ApiResponse(responseCode = "500", description = "Error interno")
     })
+    // GET /redsalud/v1/farmacia - trae todos los medicamentos
     @GetMapping
     public ResponseEntity<List<farmacia>> listarMedicamentos() {
         log.info("GET /redsalud/v1/farmacia - listando medicamentos");
@@ -49,6 +50,7 @@ public class farmaciaController {
             @ApiResponse(responseCode = "404", description = "Medicamento no encontrado"),
             @ApiResponse(responseCode = "400", description = "Id invalido")
     })
+    // GET /redsalud/v1/farmacia/{id} - busca un medicamento por su ID
     @GetMapping("/{id}")
     public ResponseEntity<farmacia> buscarPorId(@PathVariable Long id) {
         log.info("GET /redsalud/v1/farmacia/{}", id);
@@ -61,6 +63,7 @@ public class farmaciaController {
             @ApiResponse(responseCode = "201", description = "Medicamento creado"),
             @ApiResponse(responseCode = "500", description = "Error interno al crear el medicamento")
     })
+    // POST /redsalud/v1/farmacia - agrega un medicamento nuevo
     @PostMapping
     public ResponseEntity<farmacia> crear(@Valid @RequestBody FarmaciaDTO farmaciaDTO) {
         log.info("POST /redsalud/v1/farmacia - creando medicamento");
@@ -75,6 +78,7 @@ public class farmaciaController {
             @ApiResponse(responseCode = "404", description = "Medicamento no encontrado"),
             @ApiResponse(responseCode = "400", description = "Datos invalidos")
     })
+    // PUT /redsalud/v1/farmacia/{id} - reemplaza todos los datos de un medicamento
     @PutMapping("/{id}")
     public ResponseEntity<farmacia> actualizar(@PathVariable Long id, @Valid @RequestBody FarmaciaDTO farmaciaDTO) {
         log.info("PUT /redsalud/v1/farmacia/{}", id);
@@ -88,6 +92,7 @@ public class farmaciaController {
             @ApiResponse(responseCode = "404", description = "Medicamento no encontrado"),
             @ApiResponse(responseCode = "400", description = "Datos inválidos")
     })
+    // PATCH /redsalud/v1/farmacia/{id} - actualiza solo algunos campos del medicamento
     @PatchMapping("/{id}")
     public ResponseEntity<farmacia> patchMedicamento(
             @PathVariable Long id,
@@ -102,6 +107,7 @@ public class farmaciaController {
             @ApiResponse(responseCode = "204", description = "Medicamento eliminado"),
             @ApiResponse(responseCode = "500", description = "Error interno al eliminar el medicamento")
     })
+    // DELETE /redsalud/v1/farmacia/{id} - elimina un medicamento
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         log.info("DELETE /redsalud/v1/farmacia/{}", id);

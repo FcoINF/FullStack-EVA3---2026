@@ -18,6 +18,7 @@ public class programasService {
         this.repository = repository;
     }
 
+    // Guarda un nuevo programa en la BD
     public programas crear(programas programa) {
         log.info("Creando nuevo programa: {}", programa.getNombrePrograma());
         programas creado = repository.save(programa);
@@ -25,6 +26,7 @@ public class programasService {
         return creado;
     }
 
+    // Trae todos los programas de la BD
     public List<programas> listarTodos() {
         log.info("Listando todos los programas");
         List<programas> lista = repository.findAll();
@@ -32,6 +34,7 @@ public class programasService {
         return lista;
     }
 
+    // Busca un programa por su ID, si no existe lanza error
     public programas buscarPorId(Long id) {
         log.info("Buscando programa con id: {}", id);
         return repository.findById(id)
@@ -41,6 +44,7 @@ public class programasService {
                 });
     }
 
+    // Reemplaza todos los datos de un programa existente
     public programas actualizar(Long id, programas programa) {
         log.info("Actualizando programa con id: {}", id);
         programas p = buscarPorId(id);
@@ -54,6 +58,7 @@ public class programasService {
         return guardado;
     }
 
+    // Actualiza solo los campos que vienen con datos (no nulos) de un programa
     public programas patch(Long id, programas programa) {
         log.info("Actualizando parcialmente programa con id: {}", id);
 
@@ -80,6 +85,7 @@ public class programasService {
         return actualizado;
     }
 
+    // Elimina un programa de la BD
     public void eliminar(Long id) {
         log.info("Eliminando programa con id: {}", id);
         programas existente = buscarPorId(id);
